@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      简单签名插件
+    </title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="css/default.css" />
+  </head>
+  <body>
+    <div class="htmleaf-container">
+      <div class="container">
+        <div class="js-signature" id="signature1"></div>
+        <div class="row">
+          <div class="col-xs-12">
+            <h3>签名：</h3>
+            <p>在此输入:</p>
+            <div
+              class="js-signature"
+              data-width="600"
+              data-height="200"
+              data-border="1px solid black"
+              data-line-color="000"
+              data-auto-fit="true"
+            ></div>
+            <p>
+              <button
+                id="clearBtn"
+                class="btn btn-default"
+                onclick="clearCanvas();"
+              >
+                清除</button
+              >&nbsp;<button
+                id="saveBtn"
+                class="btn btn-default"
+                onclick="saveSignature();"
+                disabled
+              >
+                确认
+              </button>
+            </p>
+            <div id="signature">
+              <p>
+                <em>签名展示</em>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/jq-signature.js"></script>
+    <script type="text/javascript">
+      $(document).on('ready', function() {
+        if ($('.js-signature').length) {
+          $('.js-signature').jqSignature()
+        }
+      })
+
+      function clearCanvas() {
+        $('#signature').html('<p><em>签名展示</em></p>')
+        $('.js-signature')
+          .eq(1)
+          .jqSignature('clearCanvas')
+        $('#saveBtn').attr('disabled', true)
+      }
+
+      function saveSignature() {
+        $('#signature').empty()
+        var dataUrl = $('.js-signature')
+          .eq(1)
+          .jqSignature('getDataURL')
+        var img = $('<img>').attr('src', dataUrl)
+
+        $('#signature').append($('<p>').text('这是你的签名'))
+        $('#signature').append(img)
+        console.log(img)
+      }
+
+      $('.js-signature')
+        .eq(1)
+        .on('jq.signature.changed', function() {
+          $('#saveBtn').attr('disabled', false)
+        })
+    </script>
+  </body>
+</html>
